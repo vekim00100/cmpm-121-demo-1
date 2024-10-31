@@ -22,7 +22,13 @@ const button = document.createElement("button");
 button.textContent = "🎃";
 app.append(button);
 
-button.addEventListener('click', () => {
-    counter++;
-    counterDiv.textContent = `${counter} Pumpkins`;
+button.addEventListener("click", () => {
+  counter++;
+  counterDiv.textContent = `${counter} Pumpkins`;
 });
+
+// Adding automatic clicking
+setInterval(() => {
+  counter++;
+  counterDiv.textContent = `${counter} Pumpkins`;
+}, 1000);
