@@ -27,8 +27,23 @@ button.addEventListener("click", () => {
   counterDiv.textContent = `${counter} Pumpkins`;
 });
 
-// Adding automatic clicking
-setInterval(() => {
-  counter++;
-  counterDiv.textContent = `${counter} Pumpkins`;
-}, 1000);
+// Adding continuous growth
+let lastTimestamp = performance.now();
+
+function updateCounter(timestamp: number) {
+    const deltaTime = (timestamp - lastTimestamp) / 1000;
+    lastTimestamp = timestamp;
+
+    counter += deltaTime;
+    counterDiv.textContent = `${counter.toFixed(2)} Pumpkins`;
+
+    requestAnimationFrame(updateCounter);
+}
+
+requestAnimationFrame(updateCounter);
+
+// // Adding automatic clicking
+// setInterval(() => {
+//   counter++;
+//   counterDiv.textContent = `${counter} Pumpkins`;
+// }, 1000);
