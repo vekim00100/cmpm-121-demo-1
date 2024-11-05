@@ -11,7 +11,7 @@ app.append(header);
 
 // Initialize click counter
 let counter: number = 0;
-let growthRate: number = 0; 
+let growthRate: number = 0;
 
 // Display counter
 const counterDiv = document.createElement("div");
@@ -24,8 +24,8 @@ button.textContent = "🎃";
 app.append(button);
 
 button.addEventListener("click", () => {
-    counter++;
-    updateUI();
+  counter++;
+  updateUI();
 });
 
 // Adding upgrade button function
@@ -35,33 +35,33 @@ upgradeButton.disabled = true;
 app.append(upgradeButton);
 
 upgradeButton.addEventListener("click", () => {
-    if (counter >= 10) {
-        counter -= 10;
-        growthRate += 1;
-        updateUI();
-    }
+  if (counter >= 10) {
+    counter -= 10;
+    growthRate += 1;
+    updateUI();
+  }
 });
 
 // Update UI function
 function updateUI() {
-    counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
-    upgradeButton.disabled = counter < 10; // Disable if counter is less than 10
+  counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
+  upgradeButton.disabled = counter < 10; // Disable if counter is less than 10
 }
 
 // Set the initial timestamp
 let lastTimestamp = performance.now();
 
 function updateCounter(timestamp: number) {
-    // Calculate the time elapsed since teh last frame in seconds
-    const deltaTime = (timestamp - lastTimestamp) / 1000;
-    lastTimestamp = timestamp;
+  // Calculate the time elapsed since teh last frame in seconds
+  const deltaTime = (timestamp - lastTimestamp) / 1000;
+  lastTimestamp = timestamp;
 
-    // Increase the counter based on elapsed time and growth rate
-    counter += growthRate * deltaTime;
-    updateUI();
+  // Increase the counter based on elapsed time and growth rate
+  counter += growthRate * deltaTime;
+  updateUI();
 
-    // Request the next frame
-    requestAnimationFrame(updateCounter);
+  // Request the next frame
+  requestAnimationFrame(updateCounter);
 }
 
 // Start the animation loop
