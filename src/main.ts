@@ -59,6 +59,7 @@ upgrades.forEach((upgrade) => {
       counter -= upgrade.cost;
       growthRate += upgrade.rate;
       upgrade.purchased++;
+      upgrade.cost *= 1.15;
       updateUI();
     }
   });
@@ -69,6 +70,7 @@ upgrades.forEach((upgrade) => {
     growthRateDiv.textContent = `Growth Rate: ${growthRate} Pumpkins/sec`;
     statusDiv.textContent = `${upgrade.name} Purchased: ${upgrade.purchased}`;
     upgradeButton.disabled = counter < upgrade.cost;
+    upgradeButton.textContent = `Buy ${upgrade.name} (+${upgrade.rate}/sec) for ${upgrade.cost.toFixed(2)}`;
   }
 
   updateUI();
