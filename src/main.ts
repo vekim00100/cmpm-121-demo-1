@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "My awesome game";
+const gameName = "Pumpkin Harvest";
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -15,14 +15,14 @@ let growthRate: number = 0;
 
 // Initialize upgrade array type
 const upgrades = [
-  { name: "A", cost: 10, rate: 0.1, purchased: 0 },
-  { name: "B", cost: 100, rate: 2.0, purchased: 0 },
-  { name: "C", cost: 1000, rate: 50, purchased: 0 },
+  { name: "Seeds", emoji: "🌱", cost: 10, rate: 0.1, purchased: 0 },
+  { name: "Fertilizer", emoji: "🪱", cost: 100, rate: 2.0, purchased: 0 },
+  { name: "Tractor", emoji: "🚜", cost: 1000, rate: 50, purchased: 0 },
 ];
 
 // Display counter
 const counterDiv = document.createElement("div");
-counterDiv.textContent = `${counter} Pumpkins`;
+counterDiv.textContent = `Pumpkins Harvested: ${counter}`;
 app.append(counterDiv);
 
 // Display growth rate
@@ -44,7 +44,7 @@ button.addEventListener("click", () => {
 upgrades.forEach((upgrade) => {
   // Adding upgrade buttons
   const upgradeButton = document.createElement("button");
-  upgradeButton.textContent = `Buy ${upgrade.name} (+${upgrade.rate}/sec) for ${upgrade.cost}`;
+  upgradeButton.textContent = `${upgrade.emoji}`;
   upgradeButton.disabled = true;
   app.append(upgradeButton);
 
@@ -66,11 +66,11 @@ upgrades.forEach((upgrade) => {
 
   // Update UI function
   function updateUI() {
-    counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
-    growthRateDiv.textContent = `Growth Rate: ${growthRate} Pumpkins/sec`;
+    counterDiv.textContent = `Pumpkins Harvested: ${counter.toFixed(0)}`;
+    growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
     statusDiv.textContent = `${upgrade.name} Purchased: ${upgrade.purchased}`;
     upgradeButton.disabled = counter < upgrade.cost;
-    upgradeButton.textContent = `Buy ${upgrade.name} (+${upgrade.rate}/sec) for ${upgrade.cost.toFixed(2)}`;
+    upgradeButton.textContent = `${upgrade.emoji}`;
   }
 
   updateUI();
