@@ -13,8 +13,8 @@ app.append(header);
 let counter: number = 0;
 let growthRate: number = 0;
 
-// Initialize upgrade array type
-const upgrades = [
+// Initialize available items array type
+const availableItems = [
   { name: "Seeds", emoji: "🌱", cost: 10, rate: 0.1, purchased: 0 },
   { name: "Fertilizer", emoji: "🪱", cost: 100, rate: 2.0, purchased: 0 },
   { name: "Tractor", emoji: "🚜", cost: 1000, rate: 50, purchased: 0 },
@@ -41,25 +41,25 @@ button.addEventListener("click", () => {
   updates();
 });
 
-upgrades.forEach((upgrade) => {
+availableItems.forEach((item) => {
   // Adding upgrade buttons
   const upgradeButton = document.createElement("button");
-  upgradeButton.textContent = `${upgrade.emoji}`;
+  upgradeButton.textContent = `${item.emoji}`;
   upgradeButton.disabled = true;
   app.append(upgradeButton);
 
   // Adding status/purchased upgrades
   const statusDiv = document.createElement("div");
-  statusDiv.textContent = `${upgrade.name} Purchased: ${upgrade.purchased}`;
+  statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
   app.append(statusDiv);
 
   // Clicking on upgrade
   upgradeButton.addEventListener("click", () => {
-    if (counter >= upgrade.cost) {
-      counter -= upgrade.cost;
-      growthRate += upgrade.rate;
-      upgrade.purchased++;
-      upgrade.cost *= 1.15;
+    if (counter >= item.cost) {
+      counter -= item.cost;
+      growthRate += item.rate;
+      item.purchased++;
+      item.cost *= 1.15;
       updateUI();
     }
   });
@@ -68,9 +68,9 @@ upgrades.forEach((upgrade) => {
   function updateUI() {
     counterDiv.textContent = `Pumpkins Harvested: ${counter.toFixed(0)}`;
     growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
-    statusDiv.textContent = `${upgrade.name} Purchased: ${upgrade.purchased}`;
-    upgradeButton.disabled = counter < upgrade.cost;
-    upgradeButton.textContent = `${upgrade.emoji}`;
+    statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
+    upgradeButton.disabled = counter < item.cost;
+    upgradeButton.textContent = `${item.emoji}`;
   }
 
   updateUI();
@@ -79,9 +79,9 @@ upgrades.forEach((upgrade) => {
 function updates() {
   counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
   growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
-  upgrades.forEach((upgrade, index) => {
+  availableItems.forEach((item, index) => {
     document.querySelectorAll("button")[index + 1].disabled =
-      counter < upgrade.cost;
+      counter < item.cost;
   });
 }
 
