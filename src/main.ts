@@ -34,7 +34,7 @@ const availableItems: Item[] = [
     description: "Basic seeds to grow pumpkins.",
   },
 
-  { 
+  {
     name: "Fertilizer",
     emoji: "🪱",
     cost: 100,
@@ -43,7 +43,7 @@ const availableItems: Item[] = [
     description: "Enhances soil quality for faster growth.",
   },
 
-  { 
+  {
     name: "Tractor",
     emoji: "🚜",
     cost: 1000,
