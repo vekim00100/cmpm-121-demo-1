@@ -136,7 +136,8 @@ function updates() {
   counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
   growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
   availableItems.forEach((item, index) => {
-    document.querySelectorAll("button")[index + 1].disabled = counter < item.cost;
+    document.querySelectorAll("button")[index + 1].disabled =
+      counter < item.cost;
   });
 }
 
