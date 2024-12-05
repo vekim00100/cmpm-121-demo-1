@@ -1,10 +1,8 @@
 import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
-
 const gameName = "Pumpkin Harvest";
 document.title = gameName;
-
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
@@ -12,6 +10,14 @@ app.append(header);
 // Initialize click counter and growth rate
 let counter: number = 0;
 let growthRate: number = 0;
+
+// Define and initialize UI components
+const counterDiv = document.createElement("div");
+const growthRateDiv = document.createElement("div");
+counterDiv.textContent = `Pumpkins Harvested: ${counter}`;
+growthRateDiv.textContent = `Growth Rate: ${growthRate} Pumpkins/sec`;
+
+app.append(counterDiv, growthRateDiv);
 
 // Define the Item type
 interface Item {
@@ -70,16 +76,6 @@ const availableItems: Item[] = [
     description: "Attract visitors for massive pumpkin profits!",
   },
 ];
-
-// Display counter
-const counterDiv = document.createElement("div");
-counterDiv.textContent = `Pumpkins Harvested: ${counter}`;
-app.append(counterDiv);
-
-// Display growth rate
-const growthRateDiv = document.createElement("div");
-growthRateDiv.textContent = `Growth Rate: ${growthRate} Pumpkins/sec`;
-app.append(growthRateDiv);
 
 // Adding button function
 const button = document.createElement("button");
