@@ -111,19 +111,21 @@ function handleItemPurchase(item: Item) {
 function createItemUI(item: Item) {
   const upgradeButton = document.createElement("button");
   upgradeButton.textContent = `${item.emoji}`;
-  upgradeButton.disabled = true;
+  upgradeButton.style.display = "none"; // Initially hide the button
 
   const descriptionDiv = document.createElement("div");
   descriptionDiv.textContent = item.description;
+  descriptionDiv.style.display = "none"; // Initially hide the description
 
   const statusDiv = document.createElement("div");
   statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
+  statusDiv.style.display = "none"; // Initially hide the status count
 
   upgradeButton.addEventListener("click", () => handleItemPurchase(item));
 
   app.append(upgradeButton, descriptionDiv, statusDiv);
 
-  return { upgradeButton, statusDiv };
+  return { upgradeButton, descriptionDiv, statusDiv };
 }
 
 // Create UI for all items
@@ -135,9 +137,17 @@ function updateUI() {
   growthRateDiv.textContent = `Growth Rate: ${gameState.growthRate.toFixed(2)} Pumpkins/sec`;
 
   availableItems.forEach((item, index) => {
-    const { upgradeButton, statusDiv } = itemElements[index];
+    const { upgradeButton, descriptionDiv, statusDiv } = itemElements[index];
     statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
-    upgradeButton.disabled = gameState.counter < item.cost;
+
+    // Make the button, description, and status visible when the player can afford the item
+    if (gameState.counter >= item.cost) {
+      upgradeButton.style.display = "inline-block"; // Show the button
+      descriptionDiv.style.display = "block"; // Show the description
+      statusDiv.style.display = "block"; // Show the purchase status
+    }
+
+    upgradeButton.disabled = gameState.counter < item.cost; // Disable button if not affordable
   });
 }
 
