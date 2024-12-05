@@ -9,7 +9,6 @@
 - Each upgrade has a cost and increases the growth rate of pumpkins.
 - The UI dynamically adjusts to show upgrades when the player can afford them.
 
-### Breakdown of the changes:
-
 - **Inspiration & Credits**:
-  `https://blujai831.github.io/cmpm-121-demo-1/`
+Button Visiblity Feature:  `https://blujai831.github.io/cmpm-121-demo-1/`
+Aesthetic Design: `https://tranhunter84.github.io/cmpm-121-demo-1/`
