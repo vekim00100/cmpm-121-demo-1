@@ -10,5 +10,5 @@
 - The UI dynamically adjusts to show upgrades when the player can afford them.
 
 - **Inspiration & Credits**:
-Button Visiblity Feature:  `https://blujai831.github.io/cmpm-121-demo-1/`
-Aesthetic Design: `https://tranhunter84.github.io/cmpm-121-demo-1/`
+  Button Visiblity Feature: `https://blujai831.github.io/cmpm-121-demo-1/`
+  Aesthetic Design: `https://tranhunter84.github.io/cmpm-121-demo-1/`
