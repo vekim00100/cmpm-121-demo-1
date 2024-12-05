@@ -1,21 +1,33 @@
 import "./style.css";
 
+// Define the game state in an encapsulated object
+interface GameState {
+  counter: number;
+  growthRate: number;
+  lastTimestamp: number;
+}
+
+const gameState: GameState = {
+  counter: 0,
+  growthRate: 0,
+  lastTimestamp: performance.now(),
+};
+
+// Set up the app and title
 const app: HTMLDivElement = document.querySelector("#app")!;
 const gameName = "Pumpkin Harvest";
 document.title = gameName;
+
+// Initialize header
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-// Initialize click counter and growth rate
-let counter: number = 0;
-let growthRate: number = 0;
-
 // Define and initialize UI components
 const counterDiv = document.createElement("div");
 const growthRateDiv = document.createElement("div");
-counterDiv.textContent = `Pumpkins Harvested: ${counter}`;
-growthRateDiv.textContent = `Growth Rate: ${growthRate} Pumpkins/sec`;
+counterDiv.textContent = `Pumpkins Harvested: ${gameState.counter}`;
+growthRateDiv.textContent = `Growth Rate: ${gameState.growthRate} Pumpkins/sec`;
 
 app.append(counterDiv, growthRateDiv);
 
@@ -29,7 +41,7 @@ interface Item {
   description: string;
 }
 
-// Initialize available items array type
+// Initialize available items array
 const availableItems: Item[] = [
   {
     name: "Seeds",
@@ -73,29 +85,29 @@ const availableItems: Item[] = [
   },
 ];
 
-// Adding button function
+// Initialize main action button
 const button = document.createElement("button");
 button.textContent = "🎃";
 app.append(button);
 
-// Add Counter when clicking the button
+// Button event listener for increasing counter
 button.addEventListener("click", () => {
-  counter++;
-  updates();
+  gameState.counter++;
+  updateUI();
 });
 
-// Game logic for handling item purchase
+// Handle item purchase
 function handleItemPurchase(item: Item) {
-  if (counter >= item.cost) {
-    counter -= item.cost;
-    growthRate += item.rate;
+  if (gameState.counter >= item.cost) {
+    gameState.counter -= item.cost;
+    gameState.growthRate += item.rate;
     item.purchased++;
     item.cost *= 1.15;
     updateUI();
   }
 }
 
-// UI creation for each item
+// Create UI for each item
 function createItemUI(item: Item) {
   const upgradeButton = document.createElement("button");
   upgradeButton.textContent = `${item.emoji}`;
@@ -111,49 +123,32 @@ function createItemUI(item: Item) {
 
   app.append(upgradeButton, descriptionDiv, statusDiv);
 
-  // Update UI for this item
-  return { upgradeButton, statusDiv }; // Return references for later updating
+  return { upgradeButton, statusDiv };
 }
 
-// Create UI for each available item
+// Create UI for all items
 const itemElements = availableItems.map(createItemUI);
 
-// Update UI for all elements
+// Update UI
 function updateUI() {
-  counterDiv.textContent = `Pumpkins Harvested: ${counter.toFixed(0)}`;
-  growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
+  counterDiv.textContent = `Pumpkins Harvested: ${gameState.counter.toFixed(0)}`;
+  growthRateDiv.textContent = `Growth Rate: ${gameState.growthRate.toFixed(2)} Pumpkins/sec`;
 
-  // Update the status and button for each item
   availableItems.forEach((item, index) => {
     const { upgradeButton, statusDiv } = itemElements[index];
     statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
-    upgradeButton.disabled = counter < item.cost;
+    upgradeButton.disabled = gameState.counter < item.cost;
   });
 }
 
-// Update counter and UI
-function updates() {
-  counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
-  growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
-  availableItems.forEach((item, index) => {
-    document.querySelectorAll("button")[index + 1].disabled =
-      counter < item.cost;
-  });
-}
-
-// Set the initial timestamp
-let lastTimestamp = performance.now();
-
+// Update game state and UI during the animation loop
 function updateCounter(timestamp: number) {
-  // Calculate the time elapsed since the last frame in seconds
-  const deltaTime = (timestamp - lastTimestamp) / 1000;
-  lastTimestamp = timestamp;
+  const deltaTime = (timestamp - gameState.lastTimestamp) / 1000;
+  gameState.lastTimestamp = timestamp;
 
-  // Increase the counter based on elapsed time and growth rate
-  counter += growthRate * deltaTime;
-  updates();
+  gameState.counter += gameState.growthRate * deltaTime;
+  updateUI();
 
-  // Request the next frame
   requestAnimationFrame(updateCounter);
 }
 
