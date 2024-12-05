@@ -39,7 +39,6 @@ const availableItems: Item[] = [
     purchased: 0,
     description: "Basic seeds to grow pumpkins.",
   },
-
   {
     name: "Fertilizer",
     emoji: "🪱",
@@ -48,7 +47,6 @@ const availableItems: Item[] = [
     purchased: 0,
     description: "Enhances soil quality for faster growth.",
   },
-
   {
     name: "Tractor",
     emoji: "🚜",
@@ -57,7 +55,6 @@ const availableItems: Item[] = [
     purchased: 0,
     description: "A powerful machine to automate farming.",
   },
-
   {
     name: "Greenhouse",
     emoji: "🏠",
@@ -66,7 +63,6 @@ const availableItems: Item[] = [
     purchased: 0,
     description: "A controlled environment to maximize yield.",
   },
-
   {
     name: "Pumpkin Festival",
     emoji: "🎉",
@@ -88,60 +84,61 @@ button.addEventListener("click", () => {
   updates();
 });
 
-availableItems.forEach((item) => {
-  // Adding upgrade buttons
+// Game logic for handling item purchase
+function handleItemPurchase(item: Item) {
+  if (counter >= item.cost) {
+    counter -= item.cost;
+    growthRate += item.rate;
+    item.purchased++;
+    item.cost *= 1.15;
+    updateUI();
+  }
+}
+
+// UI creation for each item
+function createItemUI(item: Item) {
   const upgradeButton = document.createElement("button");
   upgradeButton.textContent = `${item.emoji}`;
   upgradeButton.disabled = true;
-  app.append(upgradeButton);
 
-  // Adding description div for the items
   const descriptionDiv = document.createElement("div");
   descriptionDiv.textContent = item.description;
-  app.append(descriptionDiv);
 
-  // Adding status/purchased upgrades
   const statusDiv = document.createElement("div");
   statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
-  app.append(statusDiv);
 
-  // Clicking on upgrade
-  upgradeButton.addEventListener("click", () => {
-    if (counter >= item.cost) {
-      counter -= item.cost;
-      growthRate += item.rate;
-      item.purchased++;
-      item.cost *= 1.15;
-      updateUI();
-    }
-  });
+  upgradeButton.addEventListener("click", () => handleItemPurchase(item));
 
-  // Update UI function
-  function updateUI() {
-    counterDiv.textContent = `Pumpkins Harvested: ${counter.toFixed(0)}`;
-    growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
+  app.append(upgradeButton, descriptionDiv, statusDiv);
+
+  // Update UI for this item
+  return { upgradeButton, statusDiv }; // Return references for later updating
+}
+
+// Create UI for each available item
+const itemElements = availableItems.map(createItemUI);
+
+// Update UI for all elements
+function updateUI() {
+  counterDiv.textContent = `Pumpkins Harvested: ${counter.toFixed(0)}`;
+  growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
+
+  // Update the status and button for each item
+  availableItems.forEach((item, index) => {
+    const { upgradeButton, statusDiv } = itemElements[index];
     statusDiv.textContent = `${item.name} Purchased: ${item.purchased}`;
     upgradeButton.disabled = counter < item.cost;
-    upgradeButton.textContent = `${item.emoji}`;
-  }
+  });
+}
 
-  updateUI();
-});
-
+// Update counter and UI
 function updates() {
   counterDiv.textContent = `${counter.toFixed(0)} Pumpkins`;
   growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(2)} Pumpkins/sec`;
   availableItems.forEach((item, index) => {
-    document.querySelectorAll("button")[index + 1].disabled =
-      counter < item.cost;
+    document.querySelectorAll("button")[index + 1].disabled = counter < item.cost;
   });
 }
-
-// // Adding upgrade button function
-// const upgradeButton = document.createElement("button");
-// upgradeButton.textContent = "Buy Upgrade (+1/sec)";
-// upgradeButton.disabled = true;
-// app.append(upgradeButton);
 
 // Set the initial timestamp
 let lastTimestamp = performance.now();
@@ -161,9 +158,3 @@ function updateCounter(timestamp: number) {
 
 // Start the animation loop
 requestAnimationFrame(updateCounter);
-
-// // Adding automatic clicking
-// setInterval(() => {
-//   counter++;
-//   counterDiv.textContent = `${counter} Pumpkins`;
-// }, 1000);
